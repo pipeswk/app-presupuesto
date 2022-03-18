@@ -343,6 +343,7 @@ main {
 }
 .modal .cerrar-modal {
     position: absolute;
+    margin: 10px;
     right: 3rem;
     top: 3rem;
     width: 3rem;
