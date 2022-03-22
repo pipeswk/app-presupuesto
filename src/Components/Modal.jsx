@@ -1,14 +1,32 @@
 import cerrar from '../img/cerrar.svg'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Mensaje from './Mensaje';
 
-const Modal = ( { setModal, mostrarFormModal, setMostrarFormModal } ) => {
+const Modal = ( { 
+    setModal,
+    mostrarFormModal,
+    setMostrarFormModal,
+    guardarGasto,
+    editarGasto } ) => {
 
     const [mensaje, setMensaje] = useState('');
     
     const [ nombre, setNombre ] = useState('');
     const [ cantidad, setCantidad ] = useState('');
     const [ categoria, setCategoria ] = useState('');
+    const [ id, setId ] = useState('');
+    const [ fecha, setFecha ] = useState('');
+
+    useEffect(() => {
+        if(Object.keys(editarGasto).length > 0) {
+            setNombre(editarGasto.nombre);
+            setCantidad(editarGasto.cantidad);
+            setCategoria(editarGasto.categoria);
+            setId(editarGasto.id);
+            setFecha(editarGasto.fecha);
+          }
+    }, [])
+    
     
 
     const ocultarModal = () => {
@@ -29,9 +47,16 @@ const Modal = ( { setModal, mostrarFormModal, setMostrarFormModal } ) => {
                 setMensaje('');
             }, 6000);
 
+        } else if( cantidad < 1 ) {
+            setMensaje('⚠ La cantidad debe ser superior a 0 ⚠');
+
+            setTimeout(() => {
+                setMensaje('');
+            }, 6000);
         } else {
-            console.log('Campos Ok')
-        }
+            guardarGasto( { nombre, cantidad, categoria, id, fecha } );
+            ocultarModal();
+        } return;
     }
 
   return (
@@ -47,7 +72,7 @@ const Modal = ( { setModal, mostrarFormModal, setMostrarFormModal } ) => {
             className={`formulario ${mostrarFormModal === true ? "animar" : ""}`}
             onSubmit={handleSubmit}
         >
-            <legend>Nuevo gasto</legend>
+            <legend>{Object.keys(editarGasto).length > 0 ? 'Editar gasto' : 'Nuevo gasto'}</legend>
 
             {mensaje && <Mensaje tipo="error">{mensaje}</Mensaje>}
 
@@ -87,7 +112,7 @@ const Modal = ( { setModal, mostrarFormModal, setMostrarFormModal } ) => {
                     <option value="ahorro">Ahorro</option>
                     <option value="comida">Comida</option>
                     <option value="hogar">Hogar</option>
-                    <option value="gastos Varios">Gastos Varios</option>
+                    <option value="gastos">Gastos Varios</option>
                     <option value="ocio">Ocio</option>
                     <option value="salud">Salud</option>
                     <option value="suscripciones">Suscripciones</option>
@@ -96,7 +121,7 @@ const Modal = ( { setModal, mostrarFormModal, setMostrarFormModal } ) => {
 
             <input
             type="submit"
-            value="AGREGAR GASTO" 
+            value={Object.keys(editarGasto).length > 0 ? 'GUARDAR CAMBIOS' : 'AGREGAR GASTO'}
             />
 
         </form>
