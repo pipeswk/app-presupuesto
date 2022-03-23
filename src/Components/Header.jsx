@@ -5,7 +5,7 @@ const Header = ( { presupuesto, setPresupuesto, validarPresupuesto, setValidarPr
   return (
     <header>
         <h1>
-            Planificador de gastos
+            Planificador de gastos Jupi
         </h1>
 
         {validarPresupuesto === true ? (
