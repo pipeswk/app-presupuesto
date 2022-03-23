@@ -105,6 +105,7 @@ function App() {
         validarPresupuesto={validarPresupuesto}
         setValidarPresupuesto={setValidarPresupuesto}
         gastos={gastos}
+        setGastos={setGastos}
       />
 
       {validarPresupuesto === true ? (
